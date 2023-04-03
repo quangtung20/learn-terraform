@@ -9,6 +9,7 @@ variable "env_prefix" {}
 variable "instance_type" {}
 variable "ami_owner_id" {}
 variable "key_pair_id" {}
+variable "private_key_location" {}
 
 resource "aws_vpc" "myapp_vpc" {
   cidr_block = var.vpc_cidr_block
@@ -105,9 +106,28 @@ resource "aws_instance" "myapp" {
   availability_zone           = var.avail_zone
   associate_public_ip_address = true
   key_name                    = data.aws_key_pair.server_keypair.key_name
-  user_data                   = file("entry-script.sh")
+  # user_data                   = file("entry-script.sh")
   tags = {
     Name : "${var.env_prefix}_instance"
+  }
+  connection {
+    type        = "ssh"
+    host        = self.public_ip
+    user        = "ec2-user"
+    private_key = file(var.private_key_location)
+  }
+
+  provisioner "file" {
+    source      = "entry-script.sh"
+    destination = "/home/entry-script.sh"
+  }
+
+  provisioner "remote-exec" {
+    script = file("entry-script.sh")
+  }
+
+  provisioner "local-exec" {
+    command = "echo tung"
   }
 }
 
