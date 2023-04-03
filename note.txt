@@ -1,0 +1,27 @@
+resource: tao moi
+data: tim cai da co trong privder
+terraform init -> terraform apply
+co 2 cach de xoa resource:
+c1: cmt cac resource trong file tf => terraform apply
+c2: dung terraform destroy ( khong nen dung)
+terraform plan: de xem thay doi ve he thong luc minh sua code trc khi sua code
+terraform apply -auto-approve: len plan luon ma khong can doi confirm
+terraform destroy: xoa het cac resource
+terraform state list: list cac tai nguyen duoc tao boi terraform
+terraform state show ten_tai_nguyen: xem cac thong so cua tai nguyen
+co 3 cach de input cho terraform
+c1: apply roi terraform
+c2: terraform apply -var "ten_var=value"
+c3: dinh nghia ra 1 file terraform.tfvars
+de co the dung moi file terraform cho 1 moi truong khac nhau
+=> dinh nghia ten file mt moi VD: terraform-dev.tfvars
+=> terraform apply -var-file terraform-dev.tfvars
+variable cung co type: string, number, bool, list(<TYPE>), set(<TYPE>), map(<TYPE>), object(<TYPE>), tuple([<TYPE>,...])
+de doc thong tin 1 file (gan userdata ...) => user_data = file("entry-script.sh")
+khi muon connect vao 1 ec2 => dung connection va provisioner nhung khong nen dung provisioner de thuc hien lenh trong ec2,
+neu muon thuc hien lenh trong ec2 => nen dung cicd
+best practice: khi lam chung nen dong bo terraform state, moi nguoi 1 state khac nhau => dung s3 de luu state chung
+nen chia module, moi module bao gom main.tf, variables.tf, outputs.tf
+best practice: nho turn on versioning buckets de backup tranh bi troi state
+best practice: tach state file thanh cac moi truong dev, prod, test
+best practice: su dung state locking de tranh conflict khi 2 nguoi apply 1 lan => dung dynamo db de quan ly locking
